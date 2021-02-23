@@ -18,6 +18,32 @@ type OAuth1 struct {
 	AccessSecret string
 }
 
+func (auth OAuth1) BuildOAuth1HeaderWithCallback(method, path, callback string, params map[string]string) string {
+	vals := url.Values{}
+	vals.Add("oauth_nonce", generateNonce())
+	vals.Add("oauth_consumer_key", auth.ConsumerKey)
+	vals.Add("oauth_signature_method", "HMAC-SHA1")
+	vals.Add("oauth_timestamp", strconv.Itoa(int(time.Now().Unix())))
+	vals.Add("oauth_token", auth.AccessToken)
+	vals.Add("oauth_version", "1.0")
+
+	for k, v := range params {
+		vals.Add(k, v)
+	}
+	// net/url package QueryEscape escapes " " into "+", this replaces it with the percentage encoding of " "
+	parameterString := strings.Replace(vals.Encode(), "+", "%20", -1)
+
+	// Calculating Signature Base String and Signing Key
+	signatureBase := strings.ToUpper(method) + "&" + url.QueryEscape(strings.Split(path, "?")[0]) + "&" + url.QueryEscape(parameterString)
+	signingKey := url.QueryEscape(auth.ConsumerSecret) + "&" + url.QueryEscape(auth.AccessSecret)
+	signature := calculateSignature(signatureBase, signingKey)
+
+	return "OAuth oauth_consumer_key=\"" + url.QueryEscape(vals.Get("oauth_consumer_key")) + "\", oauth_nonce=\"" + url.QueryEscape(vals.Get("oauth_nonce")) +
+		"\", oauth_signature=\"" + url.QueryEscape(signature) + "\", oauth_signature_method=\"" + url.QueryEscape(vals.Get("oauth_signature_method")) +
+		"\", oauth_timestamp=\"" + url.QueryEscape(vals.Get("oauth_timestamp")) + "\", oauth_token=\"" + url.QueryEscape(vals.Get("oauth_token")) +
+		"\", oauth_version=\"" + url.QueryEscape(vals.Get("oauth_version")) + "\", oauth_callback=\"" + url.QueryEscape(callback) + "\""
+}
+
 // Params being any key-value url query parameter pairs
 func (auth OAuth1) BuildOAuth1Header(method, path string, params map[string]string) string {
 	vals := url.Values{}

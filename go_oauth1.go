@@ -25,6 +25,7 @@ func (auth OAuth1) BuildOAuth1HeaderWithCallback(method, path, callback string, 
 	vals.Add("oauth_signature_method", "HMAC-SHA1")
 	vals.Add("oauth_timestamp", strconv.Itoa(int(time.Now().Unix())))
 	vals.Add("oauth_token", auth.AccessToken)
+	vals.Add("oauth_callback", callback)
 	vals.Add("oauth_version", "1.0")
 
 	for k, v := range params {

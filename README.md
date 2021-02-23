@@ -1,9 +1,10 @@
 # Go-OAuth1.0
 Golang lightweight package/ implementation example of OAuth1.0 Authentication Header/ Signature calculation (Twitter etc..)
+The only change has been from the original repository is the ability to add a callback parameter.
 
 To quickly import the package into your project:
 > ```
->  go get github.com/klaidas/go-oauth1
+>  go get github.com/cruffinoni/go-oauth1
 > ```
 
 &nbsp;

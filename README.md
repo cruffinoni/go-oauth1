@@ -56,6 +56,3 @@ Output:
 ```
 OAuth oauth_consumer_key="xvz1evFS4wEEPTGEFPHBog",oauth_token="370773112-GmHxMAgYyLbNEtIKZeRNFsMKPR9EyMZeS9weJAEb",oauth_signature_method="HMAC-SHA1",oauth_timestamp="1318622958",oauth_nonce="kYjzVBB8Y0ZFabxSWbWovY3uYSQ2pTgmZeNu2VS4cg",oauth_version="1.0",oauth_signature="hCtSmYh%2BiHYCEqBWrE7C7hYmtUk%3D"
 ```
-
-
-test
